@@ -2,6 +2,7 @@ package com.example.assignment3;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -107,8 +108,13 @@ public class MainActivity extends AppCompatActivity {
         initTime();
 
         mListView.setOnItemClickListener((a,v, p, i)->{
-            listOfColors.set(p, Color.WHITE);
-            mTextAdapter.notifyDataSetChanged();
+            //listOfColors.set(p, Color.WHITE);
+            //mTextAdapter.notifyDataSetChanged();
+            Intent dialog = new Intent(this, Dialog.class);
+            //System.out.println("testing: "+listOfColors.get(p));
+            dialog.putExtra("color", listOfColors.get(p));
+            dialog.putExtra("text", listOfNames.get(p));
+            startActivity(dialog);
 
 
         });
