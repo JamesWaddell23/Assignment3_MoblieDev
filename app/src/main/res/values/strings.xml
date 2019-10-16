@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Assignment3</string>
     <string name="action_settings">Settings</string>
+    <string name="food_name">Food</string>
+    <string name="work_name">Work</string>
+    <string name="sport_name">Sport</string>
+    <string name="other_name">Other</string>
 </resources>

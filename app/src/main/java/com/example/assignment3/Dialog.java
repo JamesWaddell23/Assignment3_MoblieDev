@@ -3,23 +3,27 @@ package com.example.assignment3;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class Dialog extends AppCompatActivity {
     TextView textView;
-    LinearLayout linearLayout;
+    EditText editText;
+    ConstraintLayout constraintLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog);
         textView = findViewById(R.id.textView);
-        linearLayout = findViewById(R.id.dialogLayout);
+        editText = findViewById(R.id.editText);
+        constraintLayout = findViewById(R.id.dialogLayout);
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
-            textView.setText(extras.get("text").toString());
+            textView.setText(extras.get("time").toString());
+            editText.setText(extras.get("text").toString());
             //System.out.println(extras.getInt("color"));
-            linearLayout.setBackgroundColor(extras.getInt("color"));
+            constraintLayout.setBackgroundColor(extras.getInt("color"));
         }
 
     }

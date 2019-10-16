@@ -3,22 +3,20 @@ package com.example.assignment3;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -31,18 +29,22 @@ public class MainActivity extends AppCompatActivity {
     TextAdapter mTextAdapter;
     List<String> listOfNames = new ArrayList<String>();
     List<Integer> listOfColors = new ArrayList<Integer>();
+    List<String> listOfTimes = new ArrayList<String>();
 
     private class TextAdapter extends ArrayAdapter<String>{
         //public TextViewHolder holder;
         class TextViewHolder{
-            TextView mTextView;
+            TextView mTime, mName;
+            ConstraintLayout mLayout;
+            //View mView;
             int mPos;
         }
+        //this might not be needed
         public TextAdapter(Context context, int r1, int r2, List<String> list) {
             super(context, r1, r2, list);
         }
 
-
+        //change back to add once color is set up
         public void addNameAndColor(String object, int color) {
             super.add(object);
             listOfNames.add(object);
@@ -64,9 +66,12 @@ public class MainActivity extends AppCompatActivity {
             convertView = getLayoutInflater().inflate(R.layout.color_listitem, parent, false);
             tvh = new TextViewHolder();
             tvh.mPos = position;
-            tvh.mTextView = convertView.findViewById(R.id.itemTextView);
-            tvh.mTextView.setText(listOfNames.get(tvh.mPos));
-            tvh.mTextView.setBackgroundColor(listOfColors.get(tvh.mPos));
+            tvh.mTime = convertView.findViewById(R.id.timeTextView);
+            tvh.mName = convertView.findViewById(R.id.nameTextView);
+            tvh.mLayout = convertView.findViewById(R.id.backgroundLayout);
+            tvh.mTime.setText(listOfTimes.get(tvh.mPos));
+            tvh.mName.setText(listOfNames.get(tvh.mPos));
+            tvh.mLayout.getBackground().setColorFilter(listOfColors.get(tvh.mPos), PorterDuff.Mode.SRC_IN);
             return convertView;
         }
 
@@ -74,18 +79,28 @@ public class MainActivity extends AppCompatActivity {
     public void init(){
 
         //mAdapter = new ArrayAdapter<>(this, R.layout.color_listitem, R.id.itemTextView, itemsArray);
-        mTextAdapter = new TextAdapter(this, R.layout.color_listitem, R.id.itemTextView, itemsArray);
+        mTextAdapter = new TextAdapter(this, R.layout.color_listitem, R.id.timeTextView, itemsArray);
         mListView.setAdapter(mTextAdapter);
     }
 
     public void initTime(){
-        mTextAdapter.addNameAndColor("12:00am", getResources().getColor(R.color.Food));
-        for(int i=1; i<12; i++){
-            mTextAdapter.addNameAndColor(i+":00am", getResources().getColor(R.color.Work));
+        listOfTimes.add("12:00 am");
+        for(int i=1; i<12; i++) {
+            listOfTimes.add(i+":00 am");
         }
-        mTextAdapter.addNameAndColor("12:00pm", getResources().getColor(R.color.Other));
+        listOfTimes.add("12:00 pm");
+        for(int i = 1; i<12; i++) {
+            listOfTimes.add(i+":00 pm");
+        }
+
+        //sample stuff [CHANGE ME]
+        mTextAdapter.addNameAndColor("Snack with Bob", getResources().getColor(R.color.Food));
         for(int i=1; i<12; i++){
-            mTextAdapter.addNameAndColor(i+":00pm", getResources().getColor(R.color.Sport));
+            mTextAdapter.addNameAndColor(i+":Meeting with Joe", getResources().getColor(R.color.Work));
+        }
+        mTextAdapter.addNameAndColor("Game with Steve", getResources().getColor(R.color.Other));
+        for(int i=1; i<12; i++){
+            mTextAdapter.addNameAndColor(i+":Football with Jeff", getResources().getColor(R.color.Sport));
         }
 
     }
@@ -103,26 +118,18 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mListView = findViewById(R.id.listView);
         init();
-        FloatingActionButton fab = findViewById(R.id.actionButton);
-        final TextView t = findViewById(R.id.itemTextView);
+        //FloatingActionButton fab = findViewById(R.id.actionButton);
+        final TextView t = findViewById(R.id.timeTextView);
         initTime();
 
         mListView.setOnItemClickListener((a,v, p, i)->{
-            //listOfColors.set(p, Color.WHITE);
-            //mTextAdapter.notifyDataSetChanged();
             Intent dialog = new Intent(this, Dialog.class);
-            //System.out.println("testing: "+listOfColors.get(p));
+            dialog.putExtra("time", listOfTimes.get(p));
             dialog.putExtra("color", listOfColors.get(p));
             dialog.putExtra("text", listOfNames.get(p));
             startActivity(dialog);
 
 
-        });
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mTextAdapter.add("testing");
-            }
         });
     }
 

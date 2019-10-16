@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="Work">#cc7700</color>
-    <color name="Sport">#1199cc</color>
-    <color name="Food">#33cc33</color>
+    <color name="Work">#EEA500</color>
+    <color name="Sport">#1199CC</color>
+    <color name="Food">#33CC33</color>
     <color name="Other">#999999</color>
 </resources>
