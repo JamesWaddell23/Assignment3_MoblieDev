@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@android:color/background_light"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/background_light"
+        android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
@@ -23,8 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingTop="2dp"
-        android:paddingBottom="2dp"
+        android:paddingBottom="16dp"
         android:text="Today"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="30sp" />
 
     <LinearLayout
@@ -33,87 +34,91 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/foodIcon"
+            android:id="@+id/icon1"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:tint="@color/Food"
+            android:background="@color/colorPrimary"
+            android:tint="@color/Orange"
             app:srcCompat="@android:drawable/checkbox_off_background"
             app:tintMode="src_in" />
 
         <TextView
-            android:id="@+id/foodTextView"
+            android:id="@+id/category1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:text="@string/food_name"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
         <ImageView
-            android:id="@+id/sportIcon"
+            android:id="@+id/icon2"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:tint="@color/Sport"
+            android:background="@color/colorPrimary"
+            android:tint="@color/Blue"
             app:srcCompat="@android:drawable/checkbox_off_background"
             app:tintMode="src_in" />
 
         <TextView
-            android:id="@+id/sportTextView"
+            android:id="@+id/category2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:text="@string/sport_name"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
         <ImageView
-            android:id="@+id/workIcon"
+            android:id="@+id/icon3"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:tint="@color/Work"
+            android:background="@color/colorPrimary"
+            android:tint="@color/Purple"
             app:srcCompat="@android:drawable/checkbox_off_background"
             app:tintMode="src_in" />
 
         <TextView
-            android:id="@+id/workTextView"
+            android:id="@+id/category3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:text="@string/work_name"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
         <ImageView
-            android:id="@+id/otherIcon"
+            android:id="@+id/icon4"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:tint="@color/Other"
+            android:background="@color/colorPrimary"
+            android:tint="@color/Green"
             app:srcCompat="@android:drawable/checkbox_off_background"
             app:tintMode="src_in" />
 
         <TextView
-            android:id="@+id/otherTextView"
+            android:id="@+id/category4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:text="@string/other_name"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -121,9 +126,9 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_light"
-        android:cacheColorHint="@android:color/background_light"
-        android:divider="@android:color/background_light">
+        android:background="@color/colorPrimary"
+        android:cacheColorHint="@color/colorPrimary"
+        android:divider="@color/colorPrimary">
 
     </ListView>
 
