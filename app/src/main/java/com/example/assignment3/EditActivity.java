@@ -1,7 +1,10 @@
 package com.example.assignment3;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,21 +41,12 @@ public class EditActivity extends AppCompatActivity {
         categoryButton4 = findViewById(R.id.otherButton);
 
         okButton = findViewById(R.id.okButton);
-
         clearButton = findViewById(R.id.deleteButton);
         rg = findViewById(R.id.radioGroup);
-        checkButtons();
+        initSelectButtons();
         linearLayout = findViewById(R.id.infoLayout);
-        //old way with intent
-//        if(extras != null) {
-//            textView.setText(extras.get("time").toString());
-//            editText.setText(extras.get("text").toString());
-//            linearLayout.getBackground().setColorFilter(ListItemDB.getColor(extras.getInt("color")), PorterDuff.Mode.SRC_IN);
-//        }
-        //new way data base [Maybe on separate thread
-        textView.setText(ListItemDB.getTime(extras.getInt("pos")));
-        editText.setText(ListItemDB.getText(extras.getInt("pos")));
 
+       setTimeColorAndName();
         //set category buttons text
         categoryButton1.setText(pref.getString("category1", "DEFAULT"));
         categoryButton2.setText(pref.getString("category2", "DEFAULT"));
@@ -62,23 +56,22 @@ public class EditActivity extends AppCompatActivity {
 
 
 
-        linearLayout.getBackground().setColorFilter(ListItemDB.getColor(extras.getInt("pos")), PorterDuff.Mode.SRC_IN);
-
         categoryButton1.setOnClickListener(v->{
-            linearLayout.getBackground().setColorFilter(pref.getInt("color1", 8), PorterDuff.Mode.SRC_IN);
+            linearLayout.getBackground().setColorFilter(getResources().getColor(R.color.Orange), PorterDuff.Mode.SRC_IN);
         });
         categoryButton2.setOnClickListener(v->{
-            linearLayout.getBackground().setColorFilter(pref.getInt("color2", 8), PorterDuff.Mode.SRC_IN);
+            linearLayout.getBackground().setColorFilter(getResources().getColor(R.color.Blue), PorterDuff.Mode.SRC_IN);
         });
         categoryButton3.setOnClickListener(v->{
-            linearLayout.getBackground().setColorFilter(pref.getInt("color3", 8), PorterDuff.Mode.SRC_IN);
+            linearLayout.getBackground().setColorFilter(getResources().getColor(R.color.Purple), PorterDuff.Mode.SRC_IN);
         });
         categoryButton4.setOnClickListener(v->{
-            linearLayout.getBackground().setColorFilter(pref.getInt("color4", 8), PorterDuff.Mode.SRC_IN);
+            linearLayout.getBackground().setColorFilter(getResources().getColor(R.color.Green), PorterDuff.Mode.SRC_IN);
         });
 
         clearButton.setOnClickListener(v ->{
-            ListItemDB.update(extras.getInt("pos"),"",extras.get("time").toString(), getSelectedCategory(),getResources().getColor(R.color.Empty));
+            linearLayout.getBackground().setColorFilter(getResources().getColor(R.color.Empty), PorterDuff.Mode.SRC_IN);
+            editText.setText("");
             this.finish();
         });
 
@@ -88,6 +81,54 @@ public class EditActivity extends AppCompatActivity {
 
 
     }
+
+    @SuppressLint("StaticFieldLeak")
+    void setTimeColorAndName(){
+        //set the time
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                return ListItemDB.getTime(extras.getInt("pos"));
+            }
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                textView.setText(result);
+
+            }
+        }.execute();
+
+        //set the event name
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                return ListItemDB.getText(extras.getInt("pos"));
+            }
+            @Override
+            protected void onPostExecute(String result) {
+                super.onPostExecute(result);
+                editText.setText(result);
+
+            }
+        }.execute();
+
+        //set the color
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... params) {
+                return ListItemDB.getColor(extras.getInt("pos"));
+            }
+            @Override
+            protected void onPostExecute(Integer result) {
+                super.onPostExecute(result);
+                linearLayout.getBackground().setColorFilter(result, PorterDuff.Mode.SRC_IN);
+
+            }
+        }.execute();
+    }
+
+
+
     //change me
     String getSelectedCategory(){
         if(categoryButton1.isChecked()){
@@ -104,15 +145,15 @@ public class EditActivity extends AppCompatActivity {
     }
 
 
-    void checkButtons(){
+    void initSelectButtons(){
         if(extras != null) {
-            if (extras.getInt("color") == pref.getInt("color1", 8)) {
+            if (extras.getInt("color") == getResources().getColor(R.color.Orange)) {
                 categoryButton1.setChecked(true);
-            } else if (extras.getInt("color") == pref.getInt("color2", 8)) {
+            } else if (extras.getInt("color") == getResources().getColor(R.color.Blue)) {
                 categoryButton2.setChecked(true);
-            } else if (extras.getInt("color") == pref.getInt("color3", 8)) {
+            } else if (extras.getInt("color") == getResources().getColor(R.color.Purple)) {
                 categoryButton3.setChecked(true);
-            } else if(extras.getInt("color") == pref.getInt("color4", 8)) {
+            } else if(extras.getInt("color") == getResources().getColor(R.color.Green)) {
                 categoryButton4.setChecked(true);
             }
         }
@@ -120,22 +161,35 @@ public class EditActivity extends AppCompatActivity {
 
     int getSelectedColor(){
         if(categoryButton1.isChecked()){
-            return pref.getInt("color1", 8);
+            return getResources().getColor(R.color.Orange);
         }else if(categoryButton2.isChecked()){
-            return pref.getInt("color2", 8);
+            return getResources().getColor(R.color.Blue);
         }else if(categoryButton3.isChecked()){
-            return pref.getInt("color3", 8);
+            return getResources().getColor(R.color.Purple);
         }else if(categoryButton4.isChecked()){
-            return pref.getInt("color4", 8);
+            return getResources().getColor(R.color.Green);
         }
         return getResources().getColor(R.color.Empty);
     }
 
+    @SuppressLint("StaticFieldLeak")
     void createEvent(){
         if(extras != null) {
             //pref.edit().putInt("current_position", extras.getInt("pos")).apply();
             //pref.edit().putString("text", editText.getText().toString()).apply();
-            ListItemDB.update(extras.getInt("pos"),editText.getText().toString(),extras.get("time").toString(), getSelectedCategory(),getSelectedColor());
+            //THREAD WORK
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    ListItemDB.update(extras.getInt("pos"),editText.getText().toString(),textView.getText().toString(), getSelectedCategory(),getSelectedColor());
+                    return null;
+                }
+                @Override
+                protected void onPostExecute(Void result) {
+                    super.onPostExecute(result);
+                }
+            }.execute();
+
         }
         this.finish();
     }
@@ -151,7 +205,18 @@ public class EditActivity extends AppCompatActivity {
         createEvent();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println();
+        setTimeColorAndName();
+    }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        System.out.println("onConfig()");
+        setTimeColorAndName();
 
-
+    }
 }
